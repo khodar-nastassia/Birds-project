@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block content%}
+<ul class="list-articles">
+	{% for b in birds %}
+	<li><div class="article-panel">
+		<p class="first">Категория: {{b.cat}}</p> <!--отображение категории птицы-->
+		</div>
+		{% if b.photo %}
+			<p><img class="img-article-left thumb" src="{{b.photo.url}}"></p>
+		{% endif %}
+	<h2>{{b.name}}</h2>
+	{% autoescape on %} <!--экранирование тегов включено-->
+	{{b.description|linebreaks|truncatewords:20}} <!--описание птицы, truncatewords:20 указывает количество слов -->
+	{% endautoescape %}
+			<div class="clear"></div>
+			<p class="link-read-post"><a href="{{ b.get_absolute_url }}">Подробнее</a></p>
+			</li>
+	{% endfor %}
+</ul>
+{% endblock %}

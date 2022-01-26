@@ -1,0 +1,103 @@
+{% load static %} <!-- Загрузка тега статик -->
+{% load main_tags %} <!-- Загрузка пользовательского тега -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title> <!--отображение переменной title, заданной в представлении -->
+	<link type="text/css" href="{% static 'main/css/styles.css' %}" rel="stylesheet" /> <!-- Использование тега статик -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+<tr><td valign=top>
+<!-- Меню -->
+{% block mainmenu %}
+	<div class="header">
+		<ul id="mainmenu" class="mainmenu">
+	{% for m in menu %}
+			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+    {% endfor %}
+{% if request.user.is_authenticated %} <!--если пользователь авторизован, отобразить только выйти -->
+<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+				{% else %}
+            <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>   
+			{% endif %}
+		</ul>
+			<div class="clear"></div>
+		</div>
+{% endblock mainmenu %}
+
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+<tr>
+<!-- Sidebar слева -->
+	<td valign="top" class="left-chapters">
+	<ul id="leftchapters">
+{% if cat_selected == 0 %} <!-- если выбрана, то текст -->
+		<li class="selected">Все категории</li>
+{% else %}
+		<li><a href="{% url 'birds' %}">Все категории</a></li>
+{% endif %}
+
+{% for c in cats %}
+	{% if c.pk == cat_selected %}
+		<li class="selected">{{c.category}}</li>
+	{% else %}
+		<li><a href="{{ c.get_absolute_url }}">{{c.category}}</a></li>
+	{% endif %}
+{% endfor %}
+  </ul>
+</td>
+<!-- Конец Sidebar'а -->
+<td valign="top" class="content">
+
+
+<!-- Блок контента -->
+	<div class="content-text">
+{% block content %}
+{% endblock %}
+{% if page_obj.has_other_pages %}  <!-- если есть другие стриницы -->
+	<nav class="list-pages">
+    	<ul>
+	{% if page_obj.has_previous %} <!-- если есть предыдущая стриница, будет кнопка -->
+		<li class="page-num">
+			<a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+		</li>
+	{% endif %}
+
+    {% for p in paginator.page_range %}
+		{% if page_obj.number == p %} <!-- Если номер текущей страницы совпадает с р, отобразить как текст -->
+        <li class="page-num page-num-selected">{{ p }}</li>
+		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %} <!-- отобразить 2 предыдущие и 2 последующие ссылки -->
+        <li class="page-num">
+            <a href="?page={{ p }}">{{ p }}</a>
+        </li>
+		{% endif %}
+    {% endfor %}
+
+	{% if page_obj.has_next %} <!-- если есть следующая стриница, будет кнопка -->
+		<li class="page-num">
+			<a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+		</li>
+	{% endif %}
+
+    	</ul>
+	</nav>
+{% endif %}
+	</div>
+<!-- Конец блока контента -->
+
+</td></tr></table>
+</td></tr>
+<!-- Footer -->
+<tr><td valign=top>
+	<div id="footer">
+		<p>&copy; 2022 Частичное или полное копирование информации с данного сайта для распространения на других ресурсах, в том числе и бумажных, строго запрещено.</p>
+	</div>
+</td></tr></table>
+
+<!-- Конец footer'а и страницы -->
+</body>
+</html>
+<!-- secret_key // e3104f9f61b425ebd34b741bb0d73e2e
+app_id // 686606445687450 -->

@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %} <!-- Расширение базового шаблона -->
+{% load static %}
+
+{% block content%}
+<h1>Привет, Дружочек!!!</h1>
+<p> <font size = 6 color="gray">Давай с тобой познакомимся с птицами, которые встречаются чаще всего.<br> Узнаем как они выглядят, где живут, как поют.</font></p>
+<p><font size = 5 color="gray">Ты готов?</font></p>
+<img src="{% static 'main/images/smile.jpg'%}"  width="600" height="400" alt="Улыбка">
+{% endblock %}

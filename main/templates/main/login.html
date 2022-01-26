@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block content%}
+<h1>{{title}}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>   
+    {% endfor%}
+
+    <button type="submit">Войти</button>
+</form>
+<div id="fb-root"></div>
+
+<button class="btn btn-primary mb-2">
+    <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+</button>
+<button class="btn btn-info mb-2">
+    <a href="{% url 'social:begin' 'linkedin-oauth2' %}">Login with LinkedIn</a>
+</button>
+{% endblock %}

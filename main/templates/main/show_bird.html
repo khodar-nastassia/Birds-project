@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+
+{% block content%}
+<h1>{{ bird.name }}</h1>
+<p><img class="img-article-left" src="{{bird.photo.url}}"></p>
+{{bird.description|linebreaks}} <!-- linebreaks разбивает на обзацы -->
+<audio src="{{bird.audio.url}}" controls></audio>
+{% endblock %}
